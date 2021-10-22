@@ -27,7 +27,7 @@ end
 
 for k,v in pairs(Config.Commands['AddDonatorLock']) do
 	RegisterCommand(v, function(source, args, rawCommand)
-		if IsPlayerAceAllowed(source, Config.AcePerm) then
+		if IsPlayerAceAllowed(source, Config.AdminPerm) then
 			addDonatorLock(source, args, rawCommand)
 		else
 			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
@@ -37,7 +37,7 @@ end
 
 for k,v in pairs(Config.Commands['RemoveDonatorLock']) do
 	RegisterCommand(v, function(source, args, rawCommand)
-		if IsPlayerAceAllowed(source, Config.AcePerm) then
+		if IsPlayerAceAllowed(source, Config.AdminPerm) then
 			removeDonatorLock(source, args, rawCommand)
 		else
 			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
@@ -47,7 +47,7 @@ end
 
 for k,v in pairs(Config.Commands['UpdateDonatorLockLimit']) do
 	RegisterCommand(v, function(source, args, rawCommand)
-		if IsPlayerAceAllowed(source, Config.AcePerm) then
+		if IsPlayerAceAllowed(source, Config.AdminPerm) then
 			setDonatorLockLimit(source, args, rawCommand)
 		else
 			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
