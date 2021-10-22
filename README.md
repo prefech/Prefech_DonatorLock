@@ -7,10 +7,9 @@
 ### https://discord.gg/prefech
 
 <h4 align="center">
-	Donator Lock will allow your player to give access for their cars to their friends.
-	They can pick a few friends (Server owners can set a limit.) they want to give access to the vehicle.
-
-	Keeping those private donator cars really private!
+	Donator Lock will allow your player to give access for their cars to their friends.<br>
+	They can pick a few friends (Server owners can set a limit.) they want to give access to the vehicle.<br>
+	Keeping those private donator cars really private!<br>
 </h4>
 
 ## 🛠  Requirements
@@ -43,3 +42,6 @@ ensure Prefech_DonatorLock
 
 
 ### For more support join my discord: https://discord.gg/prefech
+
+## Credit:
+Thanks to [@Galaxyyy](https://github.com/Galalalallalalaxyyyy) to help me make this.
