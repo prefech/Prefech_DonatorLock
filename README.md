@@ -42,3 +42,6 @@ ensure Prefech_DonatorLock
 
 
 ### For more support join my discord: https://discord.gg/prefech
+
+## Credit:
+Thanks to [@Galaxyyy](https://github.com/Galalalallalalaxyyyy) to help me make this.
