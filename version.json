@@ -1,5 +1,5 @@
 {
-	"date": "Oct 21, 2021",
-	"version": "1.0.0",
-	"changelog": ""
+    "date": "Oct 22, 2021",
+    "version": "1.0.1",
+    "changelog": "Added chat suggestions for the commands."
 }

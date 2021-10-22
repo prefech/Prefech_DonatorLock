@@ -16,7 +16,7 @@
 Config = {}
 
 --[[ Ace permission needed for using the staff commands ]]
-Config.AdminPerm = "jd.staff"
+Config.AcePerm = "jd.staff"
 
 -- [[ Below you can add the commands you want to use ]]
 Config.Commands = {
@@ -60,4 +60,4 @@ Config.JD_logs = {
 }
 
 --[[ Debug shizzel ]]
-Config.versionCheck = "1.0.0"
+Config.versionCheck = "1.0.1"

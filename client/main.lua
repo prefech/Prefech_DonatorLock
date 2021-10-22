@@ -14,6 +14,40 @@
 ]]
 
 status = true
+
+for k,v in pairs(Config.Commands['GiveDonatorKeys']) do
+	TriggerEvent('chat:addSuggestion', v, 'Give someone access to your donator vehicle.', {
+        { name="UserID", help="The Id of the player you want to give access." }
+    })
+end
+
+for k,v in pairs(Config.Commands['RemoveDonatorKeys']) do
+	TriggerEvent('chat:addSuggestion', v, 'Remove someone access from your donator vehicle.', {
+        { name="UserID", help="The Id of the player you want to remove access for." }
+    })
+end
+
+for k,v in pairs(Config.Commands['AddDonatorLock']) do
+	TriggerEvent('chat:addSuggestion', v, 'Add a donator lock to a vehicle.', {
+        { name="Vehicle", help="Spawn code for the vehicle" },
+        { name="Owner", help="The id of the owner of the vehicle." },
+        { name="Limit", help="How many people they can give access to the vehicle" }
+    })
+end
+
+for k,v in pairs(Config.Commands['RemoveDonatorLock']) do
+	TriggerEvent('chat:addSuggestion', v, 'Remove a donator lock from a vehicle.', {
+        { name="Vehicle", help="Spawn code for the vehicle" }
+    })
+end
+
+for k,v in pairs(Config.Commands['UpdateDonatorLockLimit']) do
+	TriggerEvent('chat:addSuggestion', v, 'Update vehicle access limit.', {
+        { name="Vehicle", help="Spawn code for the vehicle" },
+        { name="Limit", help="How many people they can give access to the vehicle" }
+    })
+end
+
 RegisterNetEvent("Prefech:updateAccess")
 AddEventHandler("Prefech:updateAccess", function(_status)
 	status = _status
