@@ -60,4 +60,4 @@ Config.JD_logs = {
 }
 
 --[[ Debug shizzel ]]
-Config.versionCheck = "1.0.1"
+Config.versionCheck = "1.0.2"

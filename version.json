@@ -1,5 +1,5 @@
 {
-    "date": "Oct 22, 2021",
-    "version": "1.0.1",
-    "changelog": "Added chat suggestions for the commands."
+    "date": "Nov 13, 2021",
+    "version": "1.0.2",
+    "changelog": "Fixed issue where people where still able to drive vehicles."
 }

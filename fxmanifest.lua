@@ -16,7 +16,7 @@
 
 author 'Prefech'
 description 'Prefech_DonatorLock'
-version '1.0.1'
+version '1.0.2'
 
 -- Config
 shared_script 'config/config.lua'

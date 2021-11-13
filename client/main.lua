@@ -70,7 +70,7 @@ Citizen.CreateThread(function()
             Citizen.Wait(500)
             if not status then
                 ClearPedTasksImmediately(iPed)
-                SetEntityAsMissionEntity(veh, true, true)                
+                SetEntityAsMissionEntity(veh, true, true)
                 ShowInfo(Config.Messages['NoPermission'])
                 if Config.JD_logs['Enabled'] then
                     exports.JD_logs:discord(GetPlayerName("**"..GetPlayerServerId(PlayerId())).."** tried to get into a `"..GetDisplayNameFromVehicleModel(VehHash).."` but got kicked out!", GetPlayerServerId(PlayerId()), 0, Config.JD_logs['Color'], Config.JD_logs['Channel'])

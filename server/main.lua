@@ -171,10 +171,10 @@ AddEventHandler("Prefech:checkAccess", function(veh)
 	local loadedFile = json.decode(loadFile)
 	local user = ExtractIdentifiers(source)
 	if loadedFile[veh] then
-		if has_value(loadedFile[veh].Allowed, user) then
+		if has_value(loadedFile[veh].Owner == user) then
 			TriggerClientEvent("Prefech:updateAccess", source, true)
 		else
-			if loadedFile[veh].Owner == user then
+			if loadedFile[veh].Allowed == user then
 				TriggerClientEvent("Prefech:updateAccess", source, true)
 			else
 				TriggerClientEvent("Prefech:updateAccess", source, false)
