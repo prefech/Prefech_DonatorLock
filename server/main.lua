@@ -13,46 +13,30 @@
     #####################################################################
 ]]
 
+if GetConvar("steam_webApiKey", "false") == 'false' then
+	print('^1You need to have a steam api set to use this resource.^0')
+	print('^1Resource will be stopped now.^0')
+	StopResource(GetCurrentResourceName())
+end
+
 for k,v in pairs(Config.Commands['GiveDonatorKeys']) do
-	RegisterCommand(v, function(source, args, rawCommand)
-		GiveDonatorKeys(source, args, rawCommand)
-	end)
+	RegisterCommand(v, GiveDonatorKeys)
 end
 
 for k,v in pairs(Config.Commands['RemoveDonatorKeys']) do
-	RegisterCommand(v, function(source, args, rawCommand)
-		RemoveDonatorKeys(source, args, rawCommand)
-	end)
+	RegisterCommand(v, RemoveDonatorKeys)
 end
 
 for k,v in pairs(Config.Commands['AddDonatorLock']) do
-	RegisterCommand(v, function(source, args, rawCommand)
-		if IsPlayerAceAllowed(source, Config.AcePerm) then
-			addDonatorLock(source, args, rawCommand)
-		else
-			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
-		end
-	end)
+	RegisterCommand(v, addDonatorLock)
 end
 
 for k,v in pairs(Config.Commands['RemoveDonatorLock']) do
-	RegisterCommand(v, function(source, args, rawCommand)
-		if IsPlayerAceAllowed(source, Config.AcePerm) then
-			removeDonatorLock(source, args, rawCommand)
-		else
-			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
-		end
-	end)
+	RegisterCommand(v, removeDonatorLock)
 end
 
 for k,v in pairs(Config.Commands['UpdateDonatorLockLimit']) do
-	RegisterCommand(v, function(source, args, rawCommand)
-		if IsPlayerAceAllowed(source, Config.AcePerm) then
-			setDonatorLockLimit(source, args, rawCommand)
-		else
-			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
-		end
-	end)
+	RegisterCommand(v, setDonatorLockLimit)
 end
 
 function GiveDonatorKeys(source, args, rawCommand)
@@ -110,60 +94,71 @@ function RemoveDonatorKeys(source, args, rawCommand)
 end
 
 function addDonatorLock(source, args, rawCommand)
-	local loadFile = LoadResourceFile(GetCurrentResourceName(), "vehicles.json")
-	local loadedFile = json.decode(loadFile)
-	local owner = ExtractIdentifiers(args[2])
-	if not loadedFile[args[1]] then
-		newCar = {}
-		newCar['Owner'] = owner
-		newCar['Allowed'] = {}
-		newCar['Limit'] = tonumber(args[3])
-		loadedFile[args[1]] = newCar
-		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['SuccessLocked']} })
-		if Config.JD_logs['Enabled'] then
-			exports.JD_logs:discord("**"..GetPlayerName(source).."** added a lock to `"..args[1].."` with a limit of: "..args[3], source, 0, Config.JD_logs['Color'], Config.JD_logs['Channel'])
+	if IsPlayerAceAllowed(source, Config.AcePerm) then
+		local loadFile = LoadResourceFile(GetCurrentResourceName(), "vehicles.json")
+		local loadedFile = json.decode(loadFile)
+		local owner = ExtractIdentifiers(args[2])
+		if not loadedFile[args[1]] then
+			newCar = {}
+			newCar['Owner'] = owner
+			newCar['Allowed'] = {}
+			newCar['Limit'] = tonumber(args[3])
+			loadedFile[args[1]] = newCar
+			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['SuccessLocked']} })
+			if Config.JD_logs['Enabled'] then
+				exports.JD_logs:discord("**"..GetPlayerName(source).."** added a lock to `"..args[1].."` with a limit of: "..args[3], source, 0, Config.JD_logs['Color'], Config.JD_logs['Channel'])
+			end
+		else
+			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['VehicleLocked']} })
 		end
+		SaveResourceFile(GetCurrentResourceName(), "vehicles.json", json.encode(loadedFile), -1)
 	else
-		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['VehicleLocked']} })
+		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
 	end
-	SaveResourceFile(GetCurrentResourceName(), "vehicles.json", json.encode(loadedFile), -1)
 end
 
 function removeDonatorLock(source, args, rawCommand)
-	local loadFile = LoadResourceFile(GetCurrentResourceName(), "vehicles.json")
-	local loadedFile = json.decode(loadFile)
-	if loadedFile[args[1]] then
-		loadedFile[args[1]] = nil
-		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['SuccessUnLocked']} })
-		if Config.JD_logs['Enabled'] then
-			exports.JD_logs:discord("**"..GetPlayerName(source).."** removed a lock from `"..args[1].."`", source, 0, Config.JD_logs['Color'], Config.JD_logs['Channel'])
+	if IsPlayerAceAllowed(source, Config.AcePerm) then
+		local loadFile = LoadResourceFile(GetCurrentResourceName(), "vehicles.json")
+		local loadedFile = json.decode(loadFile)
+		if loadedFile[args[1]] then
+			loadedFile[args[1]] = nil
+			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['SuccessUnLocked']} })
+			if Config.JD_logs['Enabled'] then
+				exports.JD_logs:discord("**"..GetPlayerName(source).."** removed a lock from `"..args[1].."`", source, 0, Config.JD_logs['Color'], Config.JD_logs['Channel'])
+			end
+		else
+			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['NotLocked']} })
 		end
+		SaveResourceFile(GetCurrentResourceName(), "vehicles.json", json.encode(loadedFile), -1)
 	else
-		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['NotLocked']} })
+		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
 	end
-	SaveResourceFile(GetCurrentResourceName(), "vehicles.json", json.encode(loadedFile), -1)
 end
 
 function setDonatorLockLimit(source, args, rawCommand)
-	local loadFile = LoadResourceFile(GetCurrentResourceName(), "vehicles.json")
-	local loadedFile = json.decode(loadFile)
-	local owner = ExtractIdentifiers(source)
-	if loadedFile[args[1]] then
-		updateCar = {}
-		updateCar['Owner'] = loadedFile[args[1]].Owner
-		updateCar['Allowed'] = loadedFile[args[1]].Allowed
-	  	updateCar['Limit'] = tonumber(args[2])
-		loadedFile[args[1]] = updateCar
-		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['LimitUpdated']} })
-		if Config.JD_logs['Enabled'] then
-			exports.JD_logs:discord("**"..GetPlayerName(source).."** updated the limit for `"..args[1].."` to: "..args[2], source, 0, Config.JD_logs['Color'], Config.JD_logs['Channel'])
+	if IsPlayerAceAllowed(source, Config.AcePerm) then
+		local loadFile = LoadResourceFile(GetCurrentResourceName(), "vehicles.json")
+		local loadedFile = json.decode(loadFile)
+		local owner = ExtractIdentifiers(source)
+		if loadedFile[args[1]] then
+			updateCar = {}
+			updateCar['Owner'] = loadedFile[args[1]].Owner
+			updateCar['Allowed'] = loadedFile[args[1]].Allowed
+			updateCar['Limit'] = tonumber(args[2])
+			loadedFile[args[1]] = updateCar
+			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['LimitUpdated']} })
+			if Config.JD_logs['Enabled'] then
+				exports.JD_logs:discord("**"..GetPlayerName(source).."** updated the limit for `"..args[1].."` to: "..args[2], source, 0, Config.JD_logs['Color'], Config.JD_logs['Channel'])
+			end
+		else
+			TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['NotLocked']} })
 		end
+		SaveResourceFile(GetCurrentResourceName(), "vehicles.json", json.encode(loadedFile), -1)
 	else
-		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['NotLocked']} })
+		TriggerClientEvent('chat:addMessage', source, { args = {"Prefech", Config.Messages['AccessDenied']} })
 	end
-	SaveResourceFile(GetCurrentResourceName(), "vehicles.json", json.encode(loadedFile), -1)
 end
-
 
 RegisterNetEvent("Prefech:checkAccess")
 AddEventHandler("Prefech:checkAccess", function(veh)
@@ -189,7 +184,7 @@ end)
 function ExtractIdentifiers(src)
     for i = 0, GetNumPlayerIdentifiers(src) - 1 do
         local id = GetPlayerIdentifier(src, i)
-        if string.find(id, "steam") then
+        if string.find(id, "steam:") then
            return id
 		end
     end
